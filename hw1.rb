@@ -18,9 +18,9 @@ class Bucket
   end
 
   def +(joiner)
-    result = @items.push(*joiner.items)
+    @items.push(*joiner.items)
     joiner.items.clear
-    result
+    self
   end
 
   def total_sum
