@@ -1,7 +1,8 @@
-# frozen string literal: true
+# frozen_string_literal: true
 
 class Bucket
   attr_accessor :items
+
   PRICES = { 'potato' => 25, 'tomato' => 35, 'cucumber' => 30, 'cherry' => 20, 'nuts' => 40 }.freeze
 
   def initialize
@@ -17,9 +18,9 @@ class Bucket
     end
   end
 
-  def +(joiner)
-    @items.push(*joiner.items)
-    joiner.items.clear
+  def +(other)
+    @items.push(*other.items)
+    other.items.clear
     self
   end
 
