@@ -1,16 +1,16 @@
-# frozen string literal true
+# frozen_string_literal: true
 
 module Validations
   MIN_LENGTH = 8
   MAX_LENGTH = 280
 
   def validator(str)
-    if str.length == 0 || str == nil
-      raise ArgumentError.new('password & text can not be blank or nil')
+    if str.length.zero? || str.nil?
+      raise ArgumentError, 'password & text can not be blank or nil'
     elsif str.length > MAX_LENGTH && str == @text
-      raise ArgumentError.new('text can not be too long')
+      raise ArgumentError, 'text can not be too long'
     elsif str.length < MIN_LENGTH && str == @password
-      raise ArgumentError.new('password can not be too short')
+      raise ArgumentError, 'password can not be too short'
     else
       puts str
     end
@@ -39,7 +39,7 @@ end
 
 class Message
   include Validations
-  attr_accessor :text
+  attr_reader :text
 
   def initialize(text)
     self.text = text
