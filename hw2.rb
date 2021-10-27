@@ -1,18 +1,20 @@
 # frozen_string_literal: true
 
 module Validations
-  MIN_LENGTH = 8
-  MAX_LENGTH = 280
+  attr_accessor :str, :type, :max, :min
 
-  def validator(str)
-    if str.length.zero? || str.nil?
-      raise ArgumentError, 'password & text can not be blank or nil'
-    elsif str.length > MAX_LENGTH && str == @text
+  def length_validator(str, type, max = 280, min = 8)
+    self.str = str
+    self.type = type
+    self.max = max
+    self.min = min
+
+    if (str.length.zero? || str.nil?) && (type.eql?(:username) || type.eql?(:text))
+      raise ArgumentError, 'username or text can not be blank'
+    elsif str.length > max && type.eql?(:text)
       raise ArgumentError, 'text can not be too long'
-    elsif str.length < MIN_LENGTH && str == @password
+    elsif str.length < min && type.eql?(:password)
       raise ArgumentError, 'password can not be too short'
-    else
-      puts str
     end
   end
 end
@@ -28,12 +30,12 @@ class User
 
   def username=(username)
     @username = username
-    validator(username)
+    length_validator(username, :username)
   end
 
   def password=(password)
     @password = password
-    validator(password)
+    length_validator(password, :password)
   end
 end
 
@@ -47,6 +49,6 @@ class Message
 
   def text=(text)
     @text = text
-    validator(text)
+    length_validator(text, :text)
   end
 end
