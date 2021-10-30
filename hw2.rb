@@ -1,20 +1,16 @@
 # frozen_string_literal: true
 
 module Validations
-  attr_accessor :str, :type, :max, :min
 
-  def length_validator(str, type, max = 280, min = 8)
-    self.str = str
-    self.type = type
-    self.max = max
-    self.min = min
-
-    if (str.length.zero? || str.nil?) && (type.eql?(:username) || type.eql?(:text))
+  def length_validator(str, min = nil, max = nil)
+    if str.length.zero? || str.nil?
       raise ArgumentError, 'username or text can not be blank'
-    elsif str.length > max && type.eql?(:text)
+    elsif min && str.length < min
+      raise ArgumentError, "password can not be too short"
+    elsif max && str.length > max
       raise ArgumentError, 'text can not be too long'
-    elsif str.length < min && type.eql?(:password)
-      raise ArgumentError, 'password can not be too short'
+    else
+      puts str
     end
   end
 end
@@ -23,19 +19,21 @@ class User
   include Validations
   attr_reader :username, :password
 
+  MIN_PASSW_LENGTH = 8
+
   def initialize(username, password)
     self.username = username
     self.password = password
   end
 
   def username=(username)
+    length_validator(username)
     @username = username
-    length_validator(username, :username)
   end
 
   def password=(password)
+    length_validator(password, MIN_PASSW_LENGTH)
     @password = password
-    length_validator(password, :password)
   end
 end
 
@@ -43,12 +41,14 @@ class Message
   include Validations
   attr_reader :text
 
+  MAX_TEXT_LENGTH = 280
+
   def initialize(text)
     self.text = text
   end
 
   def text=(text)
+    length_validator(text, MAX_TEXT_LENGTH)
     @text = text
-    length_validator(text, :text)
   end
 end
