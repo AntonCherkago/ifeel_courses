@@ -4,7 +4,7 @@ class CreateItems < ActiveRecord::Migration[6.1]
       t.string :name
       t.integer :price
       t.boolean :stock, default: false
-      t.references :users, foreign_key: true
+      t.references :user, foreign_key: true
       t.string :shop
       t.timestamps
     end
