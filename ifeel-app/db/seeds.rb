@@ -5,5 +5,13 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-ActiveRecord::Base.connection.execute("INSERT INTO users (first_name, last_name, age, created_at, updated_at) VALUES ('Anton', 'Konovalov', 18, '#{Time.current}', '#{Time.current}')")
-ActiveRecord::Base.connection.execute("INSERT INTO items (name, price, store, created_at, updated_at) VALUES ('bananas', 30, 'Delikat', '#{Time.current}', '#{Time.current}')")
+
+if User.count.zero?
+  5.times do
+    User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, email: Faker::Internet.email, phone_number: Faker::PhoneNumber.cell_phone_in_e164.to_s)
+  end
+end
+
+5.times do
+  Item.create(name: Faker::Food.dish, price: Faker::Number.number(digits: 3), stock: Faker::Boolean.boolean)
+end
